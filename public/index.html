@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="./stylesheets/bootstrap.min.css" rel="stylesheet">
+    <script src="./javascripts/vue@2.6.14.js"></script>
+
+    <style>
+        .chinese{
+            color: white !important;
+            background-color: white !important;
+        }
+        .chinese:hover{
+            color: black !important;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" :class="{'disabled': pagination.page === 1}"><a class="page-link" href="javascript:" @click.stop="changePage(pagination.page - 1)">Previous</a></li>
+<!--            <li class="page-item" ><a class="page-link" href="#">1</a></li>-->
+<!--            <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+            <li class="page-item" v-for="item in allPage" :class="{'active': item === pagination.page}"><a class="page-link" href="javascript:" @click.stop="changePage(item)">{{item}}</a></li>
+            <li class="page-item" :class="{'disabled': pagination.page === allPage}"><a class="page-link" href="javascript:" @click.stop="changePage(pagination.page + 1)">Next</a></li>
+        </ul>
+    </nav>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item,index) in wlist">
+            <th scope="row">{{index+1}}</th>
+            <td>{{item.english}}</td>
+            <td class="chinese">{{item.chinese}}</td>
+            <td>{{item.sentence}}</td>
+            <td>{{item.fayin}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="./javascripts/bootstrap.bundle.min.js"></script>
+<script src="./javascripts/api.js"></script>
+<script>
+    // const baseUrl = "http://23.105.222.59:9210"
+    const baseUrl = ""
+
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            wlist: [],
+            pagination: {
+                page: undefined,
+                size: 15,
+                total: undefined
+            },
+        },
+        methods: {
+            changePage(page){
+                // if (page < 1 || page > this.allPage){
+                //     return
+                // }
+                apiReadPage(page,this.pagination.size).then(({data,total}) => {
+                    this.wlist = data
+                    this.pagination.total = total
+                    this.pagination.page = page
+                    window.localStorage.setItem("page",page);
+                })
+            }
+        },
+        mounted() {
+            apiTotalNum().then((data)=>{
+                let total = Number(data.total);
+                this.pagination.total = total
+                let page = window.localStorage.getItem("page");
+                if (page){
+                    page = Number(page)
+                    if (this.allPage >= page){
+                        this.changePage(page)
+                    }else {
+                        this.changePage(this.allPage)
+                    }
+                }else {
+                    this.changePage(1)
+                }
+            })
+            this.changePage(1)
+        },
+        computed:{
+            allPage(){
+                if (this.pagination.total > 0){
+                    let temp = Number.parseInt(this.pagination.total / this.pagination.size)
+                    if (this.pagination.total % this.pagination.size > 0){
+                        return temp+1;
+                    }else{
+                        return temp;
+                    }
+                }
+                return 0
+            }
+        }
+    })
+
+</script>
+</body>
+</html>
