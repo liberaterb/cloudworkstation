@@ -76,7 +76,8 @@
                     this.pagination.page = page
                     window.localStorage.setItem("page",page);
                 })
-            }
+            },
+
         },
         mounted() {
             apiTotalNum().then((data)=>{
@@ -94,7 +95,6 @@
                     this.changePage(1)
                 }
             })
-            this.changePage(1)
         },
         computed:{
             allPage(){

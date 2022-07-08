@@ -28,6 +28,7 @@ router.post("/add",function(req, res, next) {
         if (arr.length > 0){
             res.statusCode = 500
             res.send("重复了")
+            return
         }
 
         dao.add(word).then(()=>{
