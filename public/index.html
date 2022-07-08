@@ -8,12 +8,12 @@
     <script src="./javascripts/vue@2.6.14.js"></script>
 
     <style>
-        .chinese {
+        .whiteShow {
             color: white !important;
             background-color: white !important;
         }
 
-        .chinese:hover {
+        .whiteShow:hover {
             color: black !important;
         }
     </style>
@@ -36,6 +36,12 @@
             </li>
         </ul>
     </nav>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" v-model="showCn" @click="clickShowCn" id="switchModeCheck">
+        <label class="form-check-label" for="switchModeCheck">
+          显示中文
+        </label>
+      </div>
     <table class="table">
         <thead>
         <tr>
@@ -52,13 +58,13 @@
                     :aria-controls="`sentence-collapse-${index}`" style="cursor: pointer;">
                     {{index+1}}
                 </th>
-                <td>{{item.english}}</td>
-                <td class="chinese">{{item.chinese}}</td>
-                <td>{{item.sentence}}</td>
+                <td :class="{'whiteShow':showCn}">{{item.english}}</td>
+                <td :class="{'whiteShow':!showCn}">{{item.chinese}}</td>
+                <td :class="{'whiteShow':showCn}">{{item.sentence}}</td>
 
             </tr>
             <tr class="collapse" :id="`sentence-collapse-${index}`">
-                <td colspan="5">
+                <td :class="{'whiteShow':showCn}" colspan="5">
                     {{item.fayin}}
                 </td>
             </tr>
@@ -76,13 +82,18 @@
         el: '#app',
         data: {
             wlist: [],
+            showCn: false,
             pagination: {
                 page: undefined,
                 size: 15,
-                total: undefined
+                total: undefined,
             },
         },
         methods: {
+            clickShowCn(e){
+               let checked = e.target.checked
+               window.localStorage.setItem("showCn", checked);
+            },
             changePage(page) {
                 // if (page < 1 || page > this.allPage){
                 //     return
@@ -97,6 +108,12 @@
 
         },
         mounted() {
+            let checked = window.localStorage.getItem("showCn")
+            if (checked) {
+                this.showCn = checked == "false" ? false:true
+            }else{
+                this.showCn = false
+            }
             apiTotalNum().then((data) => {
                 let total = Number(data.total);
                 this.pagination.total = total
