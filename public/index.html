@@ -48,8 +48,8 @@
         <tbody>
         <template v-for="(item,index) in wlist">
             <tr>
-                <th scope="row" data-bs-toggle="collapse" :data-bs-target="`#sentence-collapse-${index}`" aria-expanded="false"
-                    :aria-controls="`sentence-collapse-${index}`">
+                <th scope="row" data-bs-toggle="collapse" :data-bs-target="`#sentence-collapse-${index}`"
+                    :aria-controls="`sentence-collapse-${index}`" style="cursor: pointer;">
                     {{index+1}}
                 </th>
                 <td>{{item.english}}</td>
