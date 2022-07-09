@@ -22,7 +22,7 @@
         }
 
         .greyShow{
-            color: #929292 !important;
+            color: #bababa !important;
         }
 
         .greyShow:hover{
@@ -76,7 +76,7 @@
 
 
             </tr>
-            <tr style="background-color: #929292">
+            <tr v-if="item.sentence && item.sentence!==''" style="background-color: #bababa">
                 <td></td>
                 <td colspan="2" :class="{'colorWhite':true,'greyShow':showCn}">{{item.sentence}}</td>
             </tr>
