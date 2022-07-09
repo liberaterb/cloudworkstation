@@ -62,4 +62,18 @@ module.exports = {
             })
         })
     },
+    delete(english) {
+        return new Promise((resolve, reject) => {
+            db.serialize(() => {
+                db.run('delete from wlist where english = $english', {
+                    $english: english
+                }, (err, data) => {
+                    if (err) {
+                        reject(err)
+                    }
+                    resolve(data)
+                })
+            })
+        })
+    }
 }

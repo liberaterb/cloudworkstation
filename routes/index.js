@@ -39,5 +39,23 @@ router.post("/add",function(req, res, next) {
 
 })
 
+router.post("/delete",function(req, res, next) {
+    let {english} = req.body;
+
+    dao.selectOne(english).then(arr=>{
+        if (arr.length === 0){
+            res.statusCode = 500
+            res.send("不存在")
+            return
+        }
+
+        dao.delete(english).then(()=>{
+            res.statusCode = 200
+            res.send("成功了")
+        })
+    })
+
+})
+
 
 module.exports = router;
