@@ -16,6 +16,18 @@
         .whiteShow:hover {
             color: black !important;
         }
+
+        .colorWhite{
+            color: white;
+        }
+
+        .greyShow{
+            color: #929292 !important;
+        }
+
+        .greyShow:hover{
+            color: white !important;
+        }
     </style>
 </head>
 <body>
@@ -64,9 +76,9 @@
 
 
             </tr>
-            <tr>
+            <tr style="background-color: #929292">
                 <td></td>
-                <td colspan="2" :class="{'whiteShow':showCn}">{{item.sentence}}</td>
+                <td colspan="2" :class="{'colorWhite':true,'greyShow':showCn}">{{item.sentence}}</td>
             </tr>
             <tr class="collapse" :id="`sentence-collapse-${index}`">
                 <td :class="{'whiteShow':showCn}" colspan="3">
