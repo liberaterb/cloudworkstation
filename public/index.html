@@ -41,6 +41,8 @@
         <label class="form-check-label" for="switchModeCheck">
           显示中文
         </label>
+
+        <button style="margin-left: 20px" type="button" class="btn btn-light" @click="shuffle">shuffle</button>
       </div>
     <table class="table">
         <thead>
@@ -60,11 +62,14 @@
                 </th>
                 <td :class="{'whiteShow':showCn}">{{item.english}}</td>
                 <td :class="{'whiteShow':!showCn}">{{item.chinese}}</td>
-                <td :class="{'whiteShow':showCn}">{{item.sentence}}</td>
+
 
             </tr>
+            <tr>
+                <td colspan="3" :class="{'whiteShow':showCn}">{{item.sentence}}</td>
+            </tr>
             <tr class="collapse" :id="`sentence-collapse-${index}`">
-                <td :class="{'whiteShow':showCn}" colspan="5">
+                <td :class="{'whiteShow':showCn}" colspan="3">
                     {{item.fayin}}
                 </td>
             </tr>
@@ -77,6 +82,16 @@
 <script>
     // const baseUrl = "http://23.105.222.59:9210"
     const baseUrl = ""
+
+    function randArr(arr) {
+        for (var i = 0; i < arr.length; i++) {
+            var iRand = parseInt(arr.length * Math.random());
+            var temp = arr[i];
+            arr[i] = arr[iRand];
+            arr[iRand] = temp;
+        }
+        return arr;
+    }
 
     const vm = new Vue({
         el: '#app',
@@ -105,7 +120,9 @@
                     window.localStorage.setItem("page", page);
                 })
             },
-
+            shuffle(){
+                this.wlist = randArr(this.wlist)
+            }
         },
         mounted() {
             let checked = window.localStorage.getItem("showCn")
